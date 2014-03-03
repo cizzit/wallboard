@@ -35,4 +35,4 @@ I have this running in an init.d script to start when the Pi starts. If you want
 
 *python /path/to/file/gfimon.py*
 
-**NOTE:** If you have more than one screen, change line X in *gfimon.py* to be the relevant screen you want (program is currently set to use main screen)
+**NOTE:** If you have more than one screen, change line 9 in *gfimon.py* to be the relevant screen you want (program is currently set to use main screen)
