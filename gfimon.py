@@ -6,11 +6,6 @@ import os
 from espeak import espeak
 espeak.set_parameter(espeak.Parameter.Rate, 130)  # 110 is kinda sloooow, 220 is very fast.
 
-# v1.0 - initial release. Runs via nohup (manually started), speaks on server detection then every x*2 thereafter, back to 60s once servers are online
-# TODO
-# - Iterate through x(eg20) records on the screenshot and enumerate the offline servers.
-# - OCR client names/server names and play at an iterable period OR announce new offline servers once
-
 os.environ['DISPLAY'] = ':0'
 
 fname='/tmp/gfi_box.png'
@@ -19,7 +14,7 @@ def getImage(cntY=0):  # startX and startY are ints for what line we are on.
         print "Running getImageCompare()"
         t = wx.App() # required, unused
         screen = wx.ScreenDC()
-        bmp = wx.EmptyBitmap(160, 25) # was 20x20
+        bmp = wx.EmptyBitmap(160, 25)
 
         #abStartX=1050  # initial start X coordinate
         abStartY=164   # initial start Y coordinate
@@ -28,7 +23,7 @@ def getImage(cntY=0):  # startX and startY are ints for what line we are on.
         mem.Blit(0, 0, 160, 25, screen, 1050, ycoord) # get only the area we need
         del mem # Release image
 
-        # save to file - don't like this but hey
+        # save to file - don't like this but other options are Windows only
         bmp.SaveFile(fname, wx.BITMAP_TYPE_PNG)
         return True
 
@@ -67,6 +62,7 @@ def checkForRed(rows):
         print "finished checkForRed(%s), returned %s" % (rows, cnt)
         return cnt
 
+# Text-to-Speech bank, change text to suit here
 tts_warning = "Warning"
 tts_offlineserver_single = "offline server has been detected"
 tts_offlineserver_multiple = "offline servers have been detected"
@@ -94,7 +90,7 @@ while True:
                 if t == history:
                         # var is the same, only mention every second time
                         if counter%2==0:
-                                playMessage(tts_num[(t-1)],1)
+                                playMessage(tts_num[(t-1)],0)
                                 if t>1:
                                         playMessage(tts_stilloffline_multiple,4)
                                 else:
@@ -106,7 +102,7 @@ while True:
                         # now play the alert for however many servers are offline
                         if t<=10:
                                 playMessage(tts_warning,1)
-                                playMessage(tts_num[(t-1)],1)
+                                playMessage(tts_num[(t-1)],0)
                                 if t>1:
                                         playMessage(tts_offlineserver_multiple,4)
                                 else:
