@@ -63,7 +63,7 @@ def checkForRed(rows):
         return cnt
 
 # Text-to-Speech bank, change text to suit here
-tts_warning = "Warning"
+tts_warning = "Alert" #"Warning"
 tts_offlineserver_single = "offline server has been detected"
 tts_offlineserver_multiple = "offline servers have been detected"
 tts_stilloffline_single = "server still offline"
@@ -90,28 +90,36 @@ while True:
                 if t == history:
                         # var is the same, only mention every second time
                         if counter%2==0:
-                                playMessage(tts_num[(t-1)],0)
+                                ##playMessage(tts_num[(t-1)],0)
+                                tosay = tts_num[(t-1)]
                                 if t>1:
-                                        playMessage(tts_stilloffline_multiple,4)
+                                ##        playMessage(tts_stilloffline_multiple,4)
+                                        tosay = tosay + ' ' + tts_stilloffline_multiple
                                 else:
-                                        playMessage(tts_stilloffline_single,4)
+                                ##        playMessage(tts_stilloffline_single,4)
+                                        tosay = tosay + ' ' + tts_stilloffline_single
                         # else don't play
                 else:
                         # t is different from history, update history to equal t
                         history = t
                         # now play the alert for however many servers are offline
                         if t<=10:
-                                playMessage(tts_warning,1)
-                                playMessage(tts_num[(t-1)],0)
+                                tosay = tts_warning + ' ' + tts_num[(t-1)]
+                                ##playMessage(tts_warning,1)
+                                ##playMessage(tts_num[(t-1)],0)
                                 if t>1:
-                                        playMessage(tts_offlineserver_multiple,4)
+                                        tosay = tosay + ' ' + tts_offlineserver_multiple
+                                ##        playMessage(tts_offlineserver_multiple,4)
                                 else:
-                                        playMessage(tts_offlineserver_single,4)
+                                        tosay = tosay + ' ' + tts_offlineserver_single
+                                ##        playMessage(tts_offlineserver_single,4)
                         else:
                                 # more than ten servers are offline
-                                playMessage(tts_warning,1)
-                                playMessage(tts_morethanten,2)
-                                playMessage(tts_offlineserver_multiple,4)
+                                tosay = tts_warning + ' ' + tts_morethanten + ' ' + tts_offlineserver_multiple
+                                ##playMessage(tts_warning,1)
+                                ##playMessage(tts_morethanten,2)
+                                ##playMessage(tts_offlineserver_multiple,4)
+                playMessage(tosay,0)
                 sleeptimer=300 # five minutes
         else: # t = 0, no servers offline
                 if counter>0: # play message first time we have zero
